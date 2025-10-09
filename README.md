@@ -1,81 +1,80 @@
-# Batch Payroll Application - Use Case Diagram
+# Recycling Machine Application - Use Case Diagram
 
 ## Overview
 
-This UML Use Case Diagram represents the functional flow of a **Batch Payroll Application** that automates employee payment processing. It illustrates interactions between the **Employee**, **Bank**, **Paymaster**, and **Union** with various payroll-related operations.
+This Use Case Diagram illustrates the functional processes of the **Recycling Machine Application**, which automates bottle and can returns, refunds, and receipt generation. It also handles error detection and daily reporting, ensuring smooth operation for both customers and operators.
 
 ---
 
 ## Actors
 
-1. **Employee** – Submits work-related data and receives payments.
-2. **Bank** – Handles direct deposits and financial transactions.
-3. **Paymaster** – Oversees paycheck generation and payment approval.
-4. **Union** – Manages deductions, dues, and service charges for its members.
+1. **Customer** – Returns recyclable items, requests receipts, and receives refunds.
+2. **Operator** – Manages deposit values, daily reports, and resolves technical issues.
+3. **System** – Performs automated recognition, refund, and reporting operations within the machine.
 
 ---
 
 ## Major Use Cases
 
-### Employee Actions
+### Customer Actions
 
-* **Submit Time Card** – Employees record their worked hours.
+* **Return Bottle / Return Can** – Customers insert bottles or cans for recycling.
 
-  * *Extends:* Apply Overtime Rule
-* **Submit Sales Receipt** – Records sales for commission-based employees.
+  * *Includes:* Recognize Item
+* **Receive Refund** – Customers are refunded based on returned items.
 
-  * *Extends:* Ignore Commission if No Sales Receipt
-* **Receive Pay** – Employees obtain their payment.
+  * *Extends:* Alarm Refund Jammed (if refund system malfunctions)
+* **Request Receipt** – Customers request a printed receipt.
 
-  * *Extends:* Reject if Payment Missing or Invalid Time Card
-* **Calculate Pay** – Determines employee pay based on time cards and sales.
-
-  * *Includes:* Apply Deductions, Apply Commission Rules
+  * *Includes:* Print Receipt
+  * *Extends:* Receipt Roll Empty (if no paper available)
 
 ---
 
-### Payroll Processing
+### System Operations
 
-* **Generate Payments** – Initiates the payment process for all employees.
+* **Recognize Item** – Identifies the type of item (bottle or can) for processing.
 
-  * *Includes:* Mail Paycheck, Deliver Paycheck, Direct Deposit
-  * *Extends:* Switch to Paycheck if Bank Transfer Fails
-  * *Extends:* Hold for Pickup if Address Missing
-
----
-
-### Deductions and Rules
-
-* **Apply Deductions** – Calculates applicable deductions.
-
-  * *Includes:* Deduct Weekly Dues, Add Service Charges
-  * *Extends:* Continue Without Charges (if not applicable)
-* **Apply Commission Rules** – Applies commission structures based on sales.
-
-  * *Extends:* Skip Deductions for Non-Union Members
+  * *Includes:* Record Transaction
+  * *Extends:* Alarm Unrecognized or Blocked Items (if item type is invalid)
+* **Record Transaction** – Logs each recycling operation for reporting and tracking.
 
 ---
 
-## Payment Methods
+### Operator Functions
 
-* **Mail Paycheck** – Physical check is mailed.
-* **Deliver Paycheck** – Paymaster handles in-person paycheck delivery.
-* **Direct Deposit** – Funds transferred directly to the employee’s bank account.
+* **Update Deposit Values** – Adjusts refund or deposit values for items.
+* **View Daily Count** – Displays total items processed per day.
+* **Generate Daily Report** – Summarizes daily operations.
+
+  * *Includes:* Record Transaction
+* **Resolve Technical Issue** – Addresses any system alarms or malfunctions triggered during operation.
+
+---
+
+### Error and Alarm Handling
+
+* **Alarm Unrecognized or Blocked Items** – Triggered when an item is unreadable or blocked.
+* **Alarm Refund Jammed** – Triggered when the refund mechanism fails.
+* **Receipt Roll Empty** – Triggered when the receipt printer runs out of paper.
+* **Trigger Alarm** – Activated by any system malfunction.
+
+  * Leads to **Resolve Technical Issue** handled by the Operator.
 
 ---
 
 ## Notes
 
-* The diagram emphasizes the use of **«include»** for mandatory relationships and **«extend»** for optional or conditional scenarios.
-* It ensures that missing data (e.g., invalid time card, missing address, or failed transfer) is handled gracefully.
-* The union’s interaction highlights deduction and membership-specific rules integrated into payroll processing.
+* **«include»** relationships indicate required steps in a process (e.g., recognizing an item before issuing a refund).
+* **«extend»** relationships show optional or exception-based scenarios (e.g., refund jam or unrecognized items).
+* The system ensures continuous monitoring and automatic alerts for smooth machine operation.
 
 ---
 
 ## Purpose
 
-This model serves as a blueprint for developers and analysts to understand:
+This UML serves as a visual guide for:
 
-* The logical flow of payroll operations.
-* The dependencies among various payment-related processes.
-* How exceptions and alternate flows are managed within the system.
+* Understanding user and system interactions.
+* Identifying core and exceptional workflows in the recycling process.
+* Supporting developers and analysts in designing system logic and fault handling.
